@@ -1,0 +1,113 @@
+﻿@model Signage.Controllers.Signage.CSR
+@{
+    ViewData["Title"] = "CSR";
+}
+<div class="topFlex">
+    <div class="columnFlex">
+        <div id="salesStats">
+        </div>
+
+        <div id="orderQueue">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="20%"></th>
+                        <th class="text-center"><h1 style="color:green;">Today</h1></th>
+                        <th class="text-center"><h1 style="color:green;">MTD</h1></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr height="25%">
+                        <td class="text-right"><h2 style="color:green;">Orders</h2></td>
+                        <td class="text-center"><h3>@Model.topInfo.todayModel.bookings</h3></td>
+                        <td class="text-center"><h3>@Model.topInfo.mtdModel.bookings</h3></td>
+                    </tr>
+                    <tr height="25%">
+                        <td class="text-right"><h2 style="color:green;">Invoiced</h2></td>
+                        <td class="text-center"><h3>@Model.topInfo.todayModel.sales</h3></td>
+                        <td class="text-center"><h3>@Model.topInfo.mtdModel.sales</h3></td>
+                    </tr>
+                    <tr height="25%">
+                        <td class="text-right"><h2 style="color:green;">Order Goal</h2></td>
+                        <td class="text-center"><h3>@Model.topInfo.todayModel.goal</h3></td>
+                        <td class="text-center"><h3>@Model.topInfo.mtdModel.goal</h3></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <pre>     </pre>
+    <div class="rowFlex">
+        <div id="CSRInfo">
+            <h2 style="color:green"> MTD CSR Statistics</h2>
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th style="text-align:center" width=30%>CSR</th>
+                        <th style="text-align:center" width=11%>Orders</th>
+                        <th style="text-align:center" width=11%>Order Lines</th>
+                        <th style="text-align:center" width=11%>Order Value</th>
+                        <th style="text-align:center" width=11%>Quotes</th>
+                        <th style="text-align:center" width=11%>Quote Lines</th>
+                        <th style="text-align:center">Quote Value</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <tbody>
+                        @{
+                            int totOrder = 0;
+                            int totOLine = 0;
+                            int totQuotes = 0;
+                            int totQLine = 0;
+                            int totVal = 0;
+                            int totQVal = 0;
+
+                            if (Model != null)
+                            {
+                                foreach (var data in Model.topInfo.csrList)
+                                {
+                                        <tr>
+                                            <td width=30%>@data.name</td>
+                                            <td width=11% style="text-align:center">@data.order</td>
+                                            <td width=11% style="text-align:center">@data.orderLine</td>
+                                            <td width=11% style="text-align:right">@data.orderValues.ToString("c0")</td>
+                                            <td width=11% style="text-align:center">@data.quotes</td>
+                                            <td width=11% style="text-align:center">@data.quotesLine</td>
+                                            <td style="text-align:right">@data.quoteValues.ToString("c0")</td>
+
+                                        </tr>
+
+                                    totOrder += data.order;
+                                    totOLine += data.orderLine;
+                                    totQuotes += data.quotes;
+                                    totQLine += data.quotesLine;
+                                    totVal += data.orderValues;
+                                    totQVal += data.quoteValues;
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width=30% style="color:green">TOTAL</th>
+                        <th width=11% style="text-align:center">@totOrder.ToString("n0")</th>
+                        <th width=11% style="text-align:center">@totOLine.ToString("n0")</</th>
+                        <th width=11% style="text-align:right">@totVal.ToString("c0")</th>
+                        <th width=11% style="text-align:center">@totQuotes.ToString("n0")</</th>
+                        <th width=11% style="text-align:center">@totQLine.ToString("n0")</</th>
+                        <th style="text-align:right">@totQVal.ToString("c0")</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_Bottom")

@@ -1,0 +1,223 @@
+﻿@model Signage.Controllers.Signage.OSR;
+@{
+    ViewData["Title"] = "OSR";
+}
+<div class="container-fluid">
+    <div class="rowFlex" style="height:20%">
+        <div id="goal">
+            <table class="table justify-content-center">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th class="text-center"><h2 style="color:green;">Today</h2></th>
+                        <th class="text-center"><h2 style="color:green;">MTD</h2></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-right"><h3 style="color:green;">Orderd</h3></td>
+                        <td class="text-center"><h4>@Model.topInfo.todayModel.bookings</h4></td>
+                        <td class="text-center"><h4>@Model.topInfo.mtdModel.bookings</h4></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><h3 style="color:green;">Invoiced</h3></td>
+                        <td class="text-center"><h4>@Model.topInfo.todayModel.sales</h4></td>
+                        <td class="text-center"><h4>@Model.topInfo.mtdModel.sales</h4></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><h3 style="color:green;">Order Goal</h3></td>
+                        <td class="text-center"><h4>@Model.topInfo.todayModel.goal</h4></td>
+                        <td class="text-center"><h4>@Model.topInfo.mtdModel.goal</h4></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <pre>   </pre>
+        <div id="OSRInfo">
+            <h2 style="color:green"> MTD OSR Statistics</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width=33% style="text-align:center">OSR</th>
+                        <th>Rank</th>
+                        <th width=33% style="text-align:center">Order Value</th>
+                        <th style="text-align:center">Invoiced Value</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="table-responsive" style="height:150px">
+                <table class="table">
+                    <tbody>
+                        @{
+                            double totOSales = 0;
+                            double totISales = 0;
+                            string color;
+                            string font;
+                            if (Model != null)
+                            {
+                                foreach (var Data in Model.topInfo.osrList)
+                                {
+
+                                    switch (Data.rank)
+                                    {
+                                        case 1:
+                                        case 2:
+                                        case 3:
+                                            {
+                                                color = "green";
+                                                font = "bold";
+                                                break;
+                                            }
+                                        default:
+                                            {
+                                                color = "black";
+                                                font = "normal";
+                                                break;
+                                            }
+                                    }
+
+                                    <tr>
+                                        <td width=33%>@Data.name</td>
+                                        <td style="color:@color;text-align:center; font-weight:@font">@Data.rank</td>
+                                        <td style="text-align:right">@String.Format("{0:c}",@Data.OrderSales)</td>
+                                        <td width=33% style="text-align:right">@String.Format("{0:c}",@Data.InvSales)</td>
+                                    </tr>
+                                    totOSales += double.Parse((@Data.OrderSales.Replace("$", "")).Replace(",", ""));
+
+                                    totISales += double.Parse((@Data.InvSales.Replace("$", "")).Replace(",", ""));
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width=33% style="color:green; text-align:center">TOTAL</th>
+
+                        <th style="text-align:right ;">@totOSales.ToString("c2")</th>
+                        <th width=33% style="text-align:right ;">@totISales.ToString("c2")</th>
+
+
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="rowFlex" style="height:10%">
+        <div id="OSRCostSaving">
+            <h2 style="color:green">OSR Cost Saving</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="39%">OSR</th>
+                        <th width="19%" style="text-align:center">YTD</th>
+                        <th style="text-align:center" width="13%">% Invoice</th>
+
+                    </tr>
+                </thead>
+            </table>
+            <i>(Coming soon!)</i>
+        </div>
+        <pre>   </pre>
+        <div id="OSRInfo">
+            <h2 style="color:green"> YTD OSR Statistics</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="35%">OSR</th>
+                        <th>Rank</th>
+                        <th width="19%" style="text-align:center">YTD Invoiced</th>
+                        <th style="text-align:center" width="13%">Growth</th>
+                        <th style="text-align:center" width="11%">New Customers</th>
+                        <th style="text-align:center">New Customers Invoiced</th>
+
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="table-responsive" style="height:150px">
+                <table class="table">
+                    <tbody>
+                        @{
+                            double YTDSales = 0;
+                            double lastYear = 0;
+                            int customers = 0;
+                            double newCusSale = 0;
+
+                            if (Model != null)
+                            {
+
+                                foreach (var Data in Model.topInfo.ytdList)
+                                {
+                                    switch (Data.rank)
+                                    {
+                                        case 1:
+                                        case 2:
+                                        case 3:
+                                            {
+                                                color = "green";
+                                                font = "bold";
+                                                break;
+                                            }
+                                        default:
+                                            {
+                                                color = "black";
+                                                font = "normal";
+                                                break;
+                                            }
+                                    }
+                                    <tr>
+                                        <td width="35%">@Data.name</td>
+                                        <td style="color:@color;text-align:center; font-weight:@font">@Data.rank</td>
+                                        <td style="text-align:right" width="19%">@String.Format("{0:c0}",@Data.YTDSales)</td>
+                                        <td style="text-align:center; color:@Data.color;" width="13%">@String.Format("{0:p}",@Data.grow)</td>
+                                        <td style="text-align:center" width="11%">@Data.newCustomer</td>
+                                        <td style="text-align:right">@String.Format("{0:C0}",@Data.newCustomerSales)</td>
+                                    </tr>
+
+                                    YTDSales += Data.YTDSales;
+                                    lastYear += Data.LastYearYTDSales;
+                                    customers += Data.newCustomer;
+                                    newCusSale += Data.newCustomerSales;
+                                }
+
+
+                            }
+
+                            double grow = (YTDSales - lastYear) / lastYear;
+                            if (grow >= 0) color = "green";
+                            else color = "red";
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="color:green" width="43%">TOTAL</th>
+                        <th width="19%" style="text-align:right">@String.Format("{0:c0}",YTDSales)</th>
+                        <th style="text-align:center ; color:@color" width="13%">@String.Format("{0:p}", grow)</th>
+                        <th style="text-align:center" width="11%">@customers</th>
+                        <th style="text-align:right">@String.Format("{0:c0}",newCusSale)</th>
+
+
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+</div>
+@Html.Partial("_Bottom");
+
+</div>
+
+
+
+

@@ -1,0 +1,31 @@
+﻿@model List<Signage.Models.CheckIn.Visitor>
+@{
+    ViewData["Title"] = "Guest Check Out";
+}
+
+<div class="container">
+    <h1>CHECK OUT FORM</h1>
+    <hr />
+    <form asp-action="checkOut" asp-controller="CheckIn" method="post">
+        <h5>Who's signing-out?</h5> 
+        <select class="custom-select-lg" style="width:100%" name="visitor">
+            @{
+                foreach (var v in Model)
+                {
+                            <option value="@v.id">@v.name</option>
+                }
+            }
+        </select>
+        <pre>
+        </pre>
+
+        <h5>Feedback(<i>optional</i>)</h5>
+        <textarea name="feedback" class="form-control"></textarea>
+        <pre>
+        </pre>
+        <input type="Submit" value="Check-Out" class="btn btn-success"/>
+    </form>
+        
+        <a href="/CheckIn" style="color:grey;"><i>Return</i></a>
+
+</div>

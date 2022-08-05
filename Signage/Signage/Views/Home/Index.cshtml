@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Home Page"; ;
+}
+<div class="container">
+    <div class="flexRow" style="justify-content: space-around; flex-wrap:wrap;">
+
+        <a asp-controller="Home" asp-action="FrontLobby" class="ImageContainer" id="FrontLobbyImage">
+            <img src="~/Images/FrontLobby.PNG" />
+            <div style="font-size:30px "><i>Front Lobby</i></div>
+        </a>
+
+        <a asp-controller="Home" asp-action="CSR" class="ImageContainer" id="CSRImage">
+            <img src="~/Images/CSRArea.PNG" />
+            <div style="font-size:30px"><i>CSR Area</i></div>
+        </a>
+
+        <a asp-controller="Home" asp-action="OSR" class="ImageContainer" id="CSRImage">
+            <img src="~/Images/CSRArea.PNG" />
+            <div style="font-size:30px"><i>OSR Area</i></div>
+        </a>
+
+        <a asp-controller="Home" asp-action="WareHouse" class="ImageContainer">
+            <img src="~/Images/Warehouse.png" />
+            <div style="font-size:30px"><i>Warehouse Area</i></div>
+        </a>
+
+        <a asp-controller="Home" asp-action="AutoCrib" class="ImageContainer">
+            <img src="~/Images/AutoCrib.png" />
+            <div style="font-size:30px"><i>AutoCrib Area</i></div>
+        </a>
+    </div>
+    <pre>
+    </pre>
+                <div class="flex-lg-row Centered">
+        <button onclick="window.location.href='/CheckIn'" class="btn btn-success">Check-In Page</button>
+           <pre>  </pre>
+        <button class="btn btn-primary" onclick="window.location.href='http://intranet/'">Manage Signage</button>
+    </div>
+
+</div>
+

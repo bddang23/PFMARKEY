@@ -1,0 +1,140 @@
+﻿<div class="bottomFlex">
+    @{
+        if (!Model.ToString().Contains("FrontLobby"))
+        {
+            <div class="mb-auto" id="Birthdays">
+                <table class="table bottomTable" id="bottom">
+                    <thead>
+                        <tr style="border-width:0">
+                            <th style="border-width:0">
+                                <h2 style="color:green; ">Birthdays</h2>
+
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @{
+                            if (Model != null)
+                            {
+                                foreach (var Data in Model.botInfo.bottomInfo.employees)
+                                {
+                                    if (@Data.birthday.Contains(DateTime.Now.ToString("MMMM")) &&  int.Parse(@Data.birthday.Substring(@Data.birthday.IndexOf(" "))) >= DateTime.Now.Day)
+                                    {
+
+                                        <tr>
+                                            <td>@Data.name</td>
+                                            <td style="white-space:nowrap">@Data.birthday</td>
+                                        </tr>
+
+                                    }
+                                }
+                            }
+                        }
+
+
+                    </tbody>
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <div class="mb-auto">
+                <div class="justify-content-center">
+                <pre>
+                </pre>
+                  <a class="weatherwidget-io" href="https://forecast7.com/en/43d42n83d95/saginaw/?unit=us" data-label_1="SAGINAW" data-label_2="WEATHER" data-theme="pure" data-basecolor="rgba(255, 255, 255, 0)" >SAGINAW WEATHER</a>
+<script>
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+</script>
+                </div>
+            </div>
+
+        }
+    }
+    <div class="mb-auto" id="Anniversaries">
+        <table class="table bottomTable" id="bottom">
+            <thead>
+                <tr style="border-width:0;">
+                    <th style="border-width:0;">
+                        <h2 style="color:green; white-space:nowrap ">Work Anniversaries</h2>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model.botInfo.bottomInfo.employees != null)
+                    {
+                        foreach (var Data in Model.botInfo.bottomInfo.employees)
+                        {
+                            if (@Data.anniversary.Contains(DateTime.Now.ToString("MMMM")) &&  int.Parse(@Data.anniversary.Substring(@Data.anniversary.IndexOf(" "))) >= DateTime.Now.Day)
+                            {
+               
+                                <tr>
+                                    <td>@Data.name</td>
+                                    <td style="white-space:nowrap">@Data.anniversary</td>
+                                    <td style="white-space:nowrap">@Data.yearWorked Years</td>
+                                </tr>
+
+                            }
+                        }
+                    }
+                }
+
+
+            </tbody>
+        </table>
+
+    </div> 
+    <pre>    </pre>
+    <div class="mb-auto" id="Events">
+        <table class="table bottomTable" id="bottom">
+            <thead>
+                <tr style="border-width:0;">
+                    <th style="border-width:0;">
+                        <h2 style="color:green; white-space:nowrap ">Upcoming Events</h2>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model.botInfo.bottomInfo.events != null)
+                    {
+                        foreach (var e in Model.botInfo.bottomInfo.events)
+                        {
+                            <tr>
+                                <td>@e.title</td>
+                                <td>@e.date</td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="mb-auto" id="QuoteOfTheDay">
+        <table class="table" id="bottom">
+            <thead>
+                <tr>
+                    <th style="border-width:0;">
+                        <h2 style="color:green; white-space:nowrap ">Quote of the Day!</h2>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="row">
+                    <td width="500px" style="align-items:center">
+                        <img src="/images/quote_mark.png" width="20" height="20" />
+                        <h4 style="text-shadow:1px 1px grey; text-align:center"><cite>@Model.botInfo.bottomInfo.quote</cite></h4>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

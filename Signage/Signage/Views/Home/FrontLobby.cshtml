@@ -1,0 +1,154 @@
+﻿@model Signage.Controllers.Signage.FrontLobby;
+@{
+    ViewData["Title"] = "Front Lobby";
+}
+<div class="topFlex">
+    <video autoplay width="800" height="450" id="video" >
+        <source class="active" src="~/Videos/PF Mobile Showroom - A_C.mp4" />
+        <source src="~/Videos/pfmarkeyvideo.mp4" type="video/mp4" />
+    </video>
+    <script>
+        var myVid = document.getElementById('video');
+
+        //Switches the video over when one has stopped
+        myVid.addEventListener('ended', function(e) {
+            var activeSource = document.querySelector("#video source.active");
+            var nextSource = document.querySelector("#video source.active + source") || document.querySelector("#video source:first-child");
+
+            activeSource.className = "";
+            nextSource.className = "active";
+
+            myVid.src = nextSource.src;
+            myVid.play();
+        });</script>
+
+    <div class="frontColumnFlex">
+
+        @{
+            if (Model.topInfo.welcomeMsg.Count == 1)
+            {
+                            <div id="WelcomeMessage" class="WelcomeMessage SubViewHead Centered" style="font-weight: bold;">
+                                @Model.topInfo.welcomeMsg[0]
+                            </div>
+            }
+            else
+            {
+                            <div id="slideshow" >
+                                @{
+                        foreach (var str in Model.topInfo.welcomeMsg)
+                        {
+                                                    <div style="font-weight: bold;"  class="SubViewHead Centered WelcomeMessage">
+                                                    <h1><b>@str</b></h1>
+                                                    </div>
+                        }
+                                }
+                            </div>
+            }
+
+        }
+
+        <div class="rowFlex">
+            <div class="columnFlex">
+                <div id="LastYearTotalSave">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <h2 style="color:green; "> Total Cost Savings Last Year - @DateTime.Now.AddYears(-1).Year</h2>
+                                </th>
+                            </tr>
+                            <tr style="background-color:white;">
+                                <th>
+                                    <h2 id="num" data-value="$ @Model.topInfo.totalLastYearCostSave" style="color:darkgreen;  text-align:center "> TBD </h2>
+                                </th>
+                            </tr>
+
+                        </thead>
+                    </table>
+                </div>
+
+                <div id="contain">
+                    <div id="LastYearTopVendors" class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                @{
+                                    if (Model != null)
+                                    {
+                                        if (Model.topInfo.LastYearList.Count == 0)
+                                        {
+                                                        <tr><th> NO DATA AVAILABLE AT THE MOMENT!</th></tr>
+                                        }
+                                        else
+                                        {
+
+                                            foreach (var Data in Model.topInfo.LastYearList)
+                                            {
+                                                            <tr>
+                                                                <td><h5>@Data.VendorName</h5></td>
+                                                                <td style="white-space:nowrap; font-size:large">@String.Format("{0:c0}",@Data.CostSaved)</td>
+                                                            </tr>
+                                            }
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <pre>     </pre>
+            <div class="columnFlex">
+                <div id="ThisYearTotalSave">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <h2 style="color:green; "> Total Cost Savings YTD - @DateTime.Now.Year</h2>
+                                </th>
+                            </tr>
+                            <tr style="background-color:white;">
+                                <th>
+                                    <h2 id="num2" data-value="$ @Model.topInfo.totalThisYearCostSave" style="color:darkgreen;  text-align:center "> TBD </h2>
+                                </th>
+                            </tr>
+
+                        </thead>
+                    </table>
+                </div>
+
+                <div id="contain">
+                    <div id="ThisYearTopVendors" class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                @{
+                                   if (Model != null)
+                                    {
+                                        if (Model.topInfo.YTDList.Count == 0)
+                                        {
+                                                        <tr><th  style="color:darkgreen;  text-align:center "> NO DATA AVAILABLE AT THE MOMENT!</th></tr>
+                                        }
+                                        else
+                                        {
+
+                                            foreach (var Data in Model.topInfo.YTDList)
+                                            {
+                                                            <tr>
+                                                                <td><h5>@Data.VendorName</h5></td>
+                                                                <td style="white-space:nowrap; font-size:large">@String.Format("{0:c0}",@Data.CostSaved)</td>
+                                                            </tr>
+                                            }
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+@Html.Partial("_Bottom")
+<script src="~/js/NumberAnimation.js"></script>

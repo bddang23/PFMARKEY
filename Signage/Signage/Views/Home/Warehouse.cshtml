@@ -1,0 +1,126 @@
+﻿@{
+    ViewData["Title"] = "Warehouse";
+}
+<div class="rowFlex" style="height: 444px;">
+    <div class="rowFlex" id="stats">
+        <table class="table">
+            <thead>
+                <tr class="align-items-center">
+                    <th></th>
+                    <th class="text-center"><h3 style="color:green">TODAY</h3></th>
+                    <th class="text-center"><h3 style="color:green">MTD</h3></th>
+                    <th class="text-center"><h3 style="color:green">YTD</h3></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><h2 style="color:green">Received</h2></td>
+                    <td class="text-center"><h3>@Model.topInfo.today.received</h3></td>
+                    <td class="text-center"><h3>@Model.topInfo.mtd.received</h3></td>
+                    <td class="text-center"><h3>@Model.topInfo.ytd.received</h3></td>
+                </tr>
+                <tr>
+                    <td><h2 style="color:green">Shipped</h2></td>
+                    <td class="text-center"><h3>@Model.topInfo.today.shipped</h3></td>
+                    <td class="text-center"><h3>@Model.topInfo.mtd.shipped</h3></td>
+                    <td class="text-center"><h3>@Model.topInfo.ytd.shipped</h3></td>
+                </tr>
+                <tr>
+                    <td><h2 style="color:green">Delivered</h2></td>
+                    <td class="text-center"><h3>@Model.topInfo.today.delivered</h3></td>
+                    <td class="text-center"><h3>@Model.topInfo.mtd.delivered</h3></td>
+                    <td class="text-center"><h3>@Model.topInfo.ytd.delivered</h3></td>
+                </tr>
+                <tr>
+                    <td><h2 style="color:green">Mispacks</h2></td>
+                    <td class="text-center"><h3>@Model.topInfo.today.mispacks</h3></td>
+                    <td class="text-center"><h3>@Model.topInfo.mtd.mispacks</h3></td>
+                    <td class="text-center"><h3>@Model.topInfo.ytd.mispacks</h3></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <pre>        </pre>
+
+        <div style="align-items: center;" id="CostingInfo" >
+            <table class="table">
+                <thead><tr><th><h1 style="color:green">Costing Information</h1></th></tr></thead>
+                <thead>
+                    <tr>
+                        <th width="10%"></th>
+                        <th class="text-center" style="color:green"><b>@DateTime.Today.AddYears(-1).ToString("MMMM yyyy")</b></th>
+                        <th class="text-center" style="color:green"><b>@DateTime.Today.ToString("MMMM yyyy")</b></th>
+                        <th class="text-center" style="color:green"><b>@DateTime.Today.AddYears(-1).ToString("yyyy 'YTD as of' MM-dd")</b></th>
+                        <th class="text-center" style="color:green"><b>@DateTime.Today.ToString("yyyy 'YTD as of' MM-dd")</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Shipping Charges</b></td>
+                    @{
+                        if (Model != null)
+                        {
+                            foreach (var data in Model.topInfo.info)
+                            {
+                                                <td class="text-center"> @data.ShippingCharges </td>
+                            }
+                        }
+                    }
+                    </tr>
+                    <tr>
+                        <td><b>Average Cost Per Package</b></td>
+                    @{
+                        if (Model != null)
+                        {
+                            foreach (var data in Model.topInfo.info)
+                            {
+                                                <td class="text-center"> @data.AvgCostPerPackage </td>
+                            }
+                        }
+                    }
+                    </tr>
+                    <tr>
+                        <td><b>Average Cost Per Pound</b></td>
+                    @{
+                        if (Model != null)
+                        {
+                            foreach (var data in Model.topInfo.info)
+                            {
+                                                <td class="text-center"> @data.CostPerPound </td>
+                            }
+                        }
+                    }
+                    </tr>
+                    <tr>
+                        <td><b>Surcharges</b></td>
+                    @{
+                        if (Model != null)
+                        {
+                            foreach (var data in Model.topInfo.info)
+                            {
+                                                <td class="text-center"> @data.Surcharges </td>
+                            }
+                        }
+                    }
+                    </tr>
+                    <tr>
+                        <td><b>Audit Savings</b></td>
+                    @{
+                        if (Model != null)
+                        {
+                            foreach (var data in Model.topInfo.info)
+                            {
+                                                <td class="text-center"> @data.AuditSavings </td>
+                            }
+                        }
+                    }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</div>
+
+@Html.Partial("_Bottom")
+
+

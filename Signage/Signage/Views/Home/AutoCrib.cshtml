@@ -1,0 +1,151 @@
+﻿@model Signage.Controllers.Signage.AutoCrib
+@{
+    ViewData["Title"] = "AutoCrib";
+}
+
+<div class="rowFlex" style="height: 444px;">
+    <div style="align-items: center; width:48%">
+        <h1 style="color:green">AutoCrib Specialists</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="20%"><b>Specialist</b></th>
+                    <th width="10%" style="text-align:center"><b>Number of Account</b></th>
+                    <th width="10%" style="text-align:center"><b>Items Count</b></th>
+                    <th width="16%" style="text-align:center"><b>Inventory Value</b></th>
+                    <th width="16%" style="text-align:center"><b>Slow Value</b></th>
+                    <th style="text-align:center"><b>Dead Value</b></th>
+                    <th width="10%" style="text-align:center"><b>Dead %</b></th>
+                </tr>
+            </thead>
+        </table>
+
+        <div class="table-responsive " id="AutocribsSpecialist" style="height:40%">
+            <table class="table">
+                <tbody>
+
+                    @{
+                        int totalItems = 0;
+                        int totalNum = 0;
+                        double totalinvValue = 0;
+                        double totalSlow = 0;
+                        double totalDead = 0;
+                        double avgDead = 0;
+                        if (Model != null)
+                        {
+                            foreach (var data in Model.topInfo.autocribSpecialist)
+                            {
+                                totalItems += data.itemCount;
+                                totalNum += data.numOfAccount;
+                                totalinvValue += data.invValue;
+                                totalSlow += data.slow;
+                                totalDead += data.dead;
+
+
+                                <tr>
+                                    <td width="20%">@data.name</td>
+                                    <td width="10%" style="text-align:center">@data.numOfAccount</td>
+                                    <td width="10%" align="center">@data.itemCount</td>
+                                    <td width="16%" align="center">@data.invValue.ToString("c0")</td>
+                                    <td width="16%" align="center">@data.slow.ToString("c0")</td>
+                                    <td  align="center">@data.dead.ToString("c0")</td>
+                                    <td width="10%" align="center">@data.deadPercent %</td>
+                                </tr>
+                            }
+                        }
+
+                        avgDead = Math.Round((totalDead * 100.00) / totalinvValue, 2);
+                    }
+                </tbody>
+            </table>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="20%"><h4>TOTAL</h4></th>
+                    <th width="10%" style="text-align:center"><h5>@totalNum</h5></th>
+                    <th width="10%" style="text-align:center"><h5>@totalItems.ToString("n0")</h5></th>
+                    <th width="16%" style="text-align:center"><h5>@totalinvValue.ToString("c0")</h5></th>
+                    <th width="16%"  style="text-align:center"> <h5>@totalSlow.ToString("c0")</h5></th>
+                    <th  style="text-align:center"><h5>@totalDead.ToString("c0")</h5></th>
+                    <th width="10%" style="text-align:center"><h5>@avgDead %</h5></th>
+
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <pre>        </pre>
+
+    <div id="daysOfSupply" style="align-items: center; width:48%">
+        <h1 style="color:green">Days of Supply</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="35%"><b>Account</b></th>
+                    <th style="text-align:center"><b>Items</b></th>
+                    <th style="text-align:center"><b>Out of Stock</b></th>
+                    <th style="text-align:center"><b>Red</b></th>
+                    <th style="text-align:center"><b>Yellow</b></th>
+                    <th style="text-align:center"><b>In Stock %</b></th>
+                </tr>
+            </thead>
+
+        </table>
+        <div class="table-responsive" id="daysOfSupply">
+            <table class="table" id="daysOfSupply">
+                <tbody>
+                    @{
+                        totalItems = 0;
+                        int totalOOS = 0;
+                       int totalRed = 0;
+                       int totalYellow = 0;
+                       double avgInStock = 0;
+
+                        if (Model != null)
+                        {
+                            foreach (var data in Model.topInfo.daysOfSupply)
+                            {
+                                totalItems += data.items;
+                                totalOOS += data.outOfStock;
+                                totalRed += data.red;
+                                totalYellow += data.yellow;
+                                avgInStock += data.inStock;
+
+                                <tr>
+                                    <td width="35%">@data.name.ToUpper()</td>
+                                    <td width="10%" align="center">@data.items.ToString("n0")</td>
+                                    <td width="19%" align="center">@data.outOfStock.ToString("n0")</td>
+                                    <td width="8%" align="center">@data.red.ToString("n0")</td>
+                                    <td width="12%" align="center">@data.yellow.ToString("n0")</td>
+                                    <td align="center">@data.inStock.ToString("n2") %</td>
+                                </tr>
+                            }
+                        }
+
+                        avgInStock = Math.Round(((totalItems - totalOOS) * 100.00) / totalItems * 1.0, 2);
+                        int[] arrTotalSupply = { totalItems, totalOOS, totalRed, totalYellow };
+                    }
+                </tbody>
+            </table>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="35%"><h4>TOTAL</h4></th>
+                    <th width="10%" style="text-align:center"><h5>@arrTotalSupply[0].ToString("n0")</h5></th>
+                    <th width="19%" style="text-align:center"><h5>@arrTotalSupply[1].ToString("n0")</h5></th>
+                    <th width="8%" style="text-align:center"> <h5>@arrTotalSupply[2].ToString("n0")</h5></th>
+                    <th width="12%" style="text-align:center"><h5>@arrTotalSupply[3].ToString("n0")</h5></th>
+                    <th style="text-align:center"><h5> @avgInStock.ToString("n2")%</h5></th>
+                </tr>
+            </thead>
+        </table>
+
+
+
+    </div>
+
+</div>
+
+@Html.Partial("_Bottom")

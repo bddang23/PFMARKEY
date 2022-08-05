@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PFMarkey Inc.</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
+
+</head>
+
+<body onload="startTime()">
+    <nav class="navbar navbar-dark bg-secondary" style="height: 5%; padding: 0;" id="headerBar">
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index" stlye="float: left;">
+            <img src="~/images/pfm-logos-01.png" style="width: 400px; height: auto; padding: 0; padding-left: 1%;" />
+        </a>
+        @{
+            if (Model != null)
+            {
+             
+            if (!Model.ToString().Contains("FrontLobby"))
+            {
+                        <div class="ml-auto" style="padding-right: 0%; float: right;width:250px;text-align:center;">
+            <a class="weatherwidget-io" href="https://forecast7.com/en/43d42n83d95/saginaw/?unit=us" data-label_1="SAGINAW" data-font="Helvetica" data-icons="Climacons Animated" data-mode="Current" data-theme="gray" data-basecolor="rgba(255, 255, 255, 0)" data-highcolor="#fde5de" data-lowcolor="#f4faff" data-suncolor="#ffffff" data-raincolor="#c5ddee">SAGINAW</a>
+
+        </div>
+            }   
+            }
+        }
+
+        <div class="navbar-text" style="font-size: 36px; text-align:center; color: white; padding-right: 5%;">
+            <div><b style="font-family:Arial, Helvetica, sans-serif"  id="date"></b></div>
+            <div id="clock"></div>
+
+        </div>
+    </nav>
+    <div class="container-xxl">
+        <main class="container-fluid mainPageColumn">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        !function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
