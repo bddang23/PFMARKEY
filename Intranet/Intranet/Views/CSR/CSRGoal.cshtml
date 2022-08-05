@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Business - CSR";
+
+}
+
+<div class="container">
+    <div class="row">
+        <h1>CSR Goals</h1>
+        <hr />
+        <label for="monthYear">Month and Year Filter</label>
+        <input type="month" name="monthYear" onchange="loadGoal(this.value)" value="@Model.month.ToString("yyyy-MM")" />
+    </div>
+    <pre>
+    </pre>
+    <div class="row-cols-1">
+        <form class="form" asp-action="updateGoal" asp-controller="CSR">
+            <input type="month" name="monthYear" onchange="loadGoal(this.value)" value="@Model.month.ToString("yyyy-MM")" hidden/>
+            <label for="daily">Daily Goal</label>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">$</div>
+                </div>
+                <input type="text" name="daily" class="form-control" id="inlineFormInputGroup" placeholder="0,000.00" value="@Model.sales_Day.ToString("N2")">
+            </div>
+            <br />
+            <label style="font:bold" for="mtd">Month To Date Goal</label>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">$</div>
+                </div>
+                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0,000.00" name="mtd" value="@Model.sales_Month.ToString("N2")">
+            </div>
+            <br />
+            <input type="submit" value="Save" class="btn btn-success">
+
+        </form>
+    </div>
+
+</div>
+
+<script>
+
+    function loadGoal(value) {
+ 
+    window.location.href = '@Url.Action("CSRGoal","CSR")?month=' + value;
+    }
+
+</script>

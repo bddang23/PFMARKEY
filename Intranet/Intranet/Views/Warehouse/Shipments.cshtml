@@ -1,0 +1,133 @@
+﻿@model Intranet.Models.Warehouse.Shipments
+@{
+    ViewData["Title"] = "Warehouse - Shipments";
+}
+
+<div class="container">
+    <h2 style="color:darkgreen">TODAY SHIPMENT'S STATISTIC</h2>
+    <hr />
+    <div class="d-flex justify-content-around">
+        <div>
+            <h3><b>Received @Model.Packages_Received</b></h3>
+            @Html.Partial("_counter","received")
+        </div>
+        <div>
+            <h3><b>Deliveries @Model.Deliveries_Made</b></h3>
+            @Html.Partial("_counter","deliveries")
+        </div>
+        <div>
+            <h3><b>Shipped @Model.Packages_Shipped</b></h3>
+            @Html.Partial("_counter","shipped")
+        </div>
+    </div>
+    <br />
+    <div class="d-flex justify-content-around">
+        <div>
+            <h3><b>Mispacks @Model.Mispacks</b></h3>
+            @Html.Partial("_counter","mispacks")
+        </div>
+
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <button class="btn btn-primary" onclick="updateShipment()">UPDATE</button>
+    </div>
+</div>
+
+<script>
+    function minus(id) {
+        let model = id.substring(id.indexOf("-"));
+
+        let count = document.getElementById("count" + model);
+        count.value = count.value - 1;
+    }
+
+    function add(id) {
+        let model = id.substring(id.indexOf("-"));
+        let count = document.getElementById("count" + model);
+        count.value = parseInt(count.value) + 1;
+    }
+
+    function updateShipment() {
+        var list = document.getElementsByClassName("trackCounter");
+        var flag = false;
+        var received;
+        var deliveries;
+        var shipped;
+        var mispacks;
+        for (var i = 0; i < list.length; i++) {
+
+            if (list[i].id.toString().includes("received")) {
+                if (@Model.Packages_Received== 0 && parseInt(list[i].value) < 0) {
+                    flag = false;
+                    alert("Received is 0. Cannot substract!");
+                    break;
+                } else if (@Model.Packages_Received +parseInt(list[i].value) < 0) {
+                    flag = false;
+                    alert("Cannot substract more than original value!");
+                    break;
+                }
+                else {
+                    flag = true;
+                    received = parseInt(list[i].value) + @Model.Packages_Received;
+                }
+            } else if (list[i].id.toString().includes("deliveries")) {
+                if (@Model.Deliveries_Made== 0 && parseInt(list[i].value) < 0) {
+                    alert("Deliveries is 0. Cannot substract!");
+                    flag = false;
+                    break;
+                } else if (@Model.Deliveries_Made +parseInt(list[i].value) < 0) {
+                    flag = false;
+                    alert("Cannot substract more than original value!");
+                    break;
+                } else {
+                    flag = true;
+                    deliveries = parseInt(list[i].value) + @Model.Deliveries_Made;
+                }
+            } else if (list[i].id.toString().includes("shipped")) {
+                if (@Model.Packages_Shipped== 0 && parseInt(list[i].value) < 0) {
+                    alert("Shipped is 0. Cannot substract!");
+                    flag = false;
+                    break;
+                } else if (@Model.Packages_Shipped +parseInt(list[i].value) < 0) {
+                    flag = false;
+                    alert("Cannot substract more than original value!");
+                    break;
+                } else {
+                    flag = true;
+                    shipped = parseInt(list[i].value) + @Model.Packages_Shipped;
+                }
+            } else if (list[i].id.toString().includes("mispacks")) {
+                if (@Model.Mispacks== 0 && parseInt(list[i].value) < 0) {
+                    alert("Mispacks is 0. Cannot substract!");
+                    flag = false;
+                    break;
+                } else if (@Model.Mispacks +parseInt(list[i].value) < 0) {
+                    flag = false;
+                    alert("Cannot substract more than original value!");
+                    break;
+                } else {
+                    flag = true;
+                    mispacks = parseInt(list[i].value) + @Model.Mispacks;
+                }
+            }
+        }
+
+        if (flag) {
+
+            $.ajax({
+                url: '/Warehouse/updateShipments',
+                type: 'POST',
+                dataType: 'JSON',
+                data: { Id: @Model.id, Received: received, Deliveries: deliveries, Shipped: shipped, Mispacks: mispacks },
+                success: function(response) {
+                    location.reload();
+                }
+
+            });
+        }
+    }
+
+
+</script>

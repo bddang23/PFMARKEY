@@ -1,0 +1,48 @@
+﻿@model List<Intranet.Models.AutoCrib.Company>;
+@{
+    ViewData["Title"] = "Autocrib - Company";
+}
+<div class="container">
+    <div>
+        <h2>AutoCrib Company - View Only</h2>
+    </div>
+    <hr />
+    <br>
+
+    <button class="btn btn-info" onclick="window.location.href='/AutoCrib/Specialist'">View By Specialist</button>
+    <button class="btn btn-outline-secondary" onclick="window.location.href='/AutoCrib/AssignSpecialist'">Assign Company To Specialist</button>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Company's Name</th>
+                    <th>Items</th>
+                    <th>Out of Stock</th>
+                    <th>Red</th>
+                    <th>Yellow</th>
+                    <th>In Stock (%)</th>
+                    <th>Assigned Specialist</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var c in Model)
+                    {
+                        <tr>
+                        <td>@c.id</td>
+                        <td>@c.name</td>
+                        <td>@c.items</td>
+                        <td>@c.outOfStock</td>
+                        <td>@c.red</td>
+                        <td>@c.yellow</td>
+                        <td>@c.inStock</td>
+                        <td>@c.assignedSpecialist.name</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

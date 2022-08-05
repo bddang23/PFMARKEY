@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Intranet</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Intranet.styles.css" asp-append-version="true" />
+    @await RenderSectionAsync("header", required: false)
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index"><img style="width:30%" src="~/images/pfm-logos-01.png" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Signage
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="Calendar" asp-action="Index">Calendar</a></li>
+                                <li><a class="dropdown-item" asp-controller="ManageEvents" asp-action="Index">Events</a></li>
+                                <li><a class="dropdown-item" asp-controller="Employees" asp-
+                                    action="Index">Employees</a></li>
+                                <li><a class="dropdown-item" asp-controller="Quotes" asp-action="Index">Quotes of The Day</a></li>
+                                <li><a class="dropdown-item" asp-controller="WelcomeMessage" asp-action="Index">Welcome Message</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Business
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="CSR" asp-action="CSRGoal">CSR Goal</a></li>
+                                <li><a class="dropdown-item" asp-controller="OSR" asp-action="Index">OSR Cost Saving</a></li>
+                                <li><a class="dropdown-item" asp-controller="VCS" asp-action="CostSaving_ByVendor">Vendor Cost Savings</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Warehouse
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="Warehouse" asp-action="Shipments">Shipments</a></li>
+                                <li><a class="dropdown-item" asp-controller="Warehouse" asp-action="History">History</a></li>
+                                <li><a class="dropdown-item" asp-controller="Warehouse" asp-action="Veriship">Veriship Entry</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                AutoCrib
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="AutoCrib" asp-action="Specialist">By Specialist</a></li>
+                                <li><a class="dropdown-item" asp-controller="AutoCrib" asp-action="Company">By Company</a></li>
+                                <li><a class="dropdown-item" asp-controller="AutoCrib" asp-action="AssignSpecialist">Assign Company to Specialist</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

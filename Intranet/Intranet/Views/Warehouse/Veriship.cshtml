@@ -1,0 +1,89 @@
+﻿@model Intranet.Models.Warehouse.Veriship
+@{
+    ViewData["Title"] = "Warehouse - Veriship";
+}
+<div class="container">
+    <div class="row">
+        <h2>Veriship Info</h2>
+        <hr />
+    </div>
+    <div class="row">
+        <label><b>Filter</b></label>
+        <input style="width:15%" type="month" id="month" name="filter" onchange="getInfo(this.value)" value="@Model.dateFor.ToString("yyyy-MM")">
+
+    </div>
+    <pre>
+    </pre>
+    <div class="row">
+        <form asp-action="UpdateVeriship" asp-controller="Warehouse" method="post" onsubmit="return validateForm()" name="Event" class="form-control">
+            <input type="hidden" value="@Model.dateFor" name="dateFor"/>
+
+            <div class="form-group">
+                <label for="shippingCharges">Shipping Charges</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    <input type="text" name="shippingCharges" placeholder="0.00" value="@Model.shippingCharges.ToString("n2")" required>
+                </div>
+
+            </div>
+            <br />
+
+            <div class="form-group">
+                <label for="avgCostPerPack">Average Cost Per Package</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    <input type="text" name="avgCostPerPack" placeholder="0.00" value="@Model.avgCostPerPackage.ToString("n2")" required>
+                </div>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <label for="costPerPound">Cost Per Pound</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    <input type="text" name="costPerPound" placeholder="0.00" value="@Model.costPerPound.ToString("n2")" required>
+                </div>
+
+            </div>
+            <br />
+            <div class="form-group">
+                <label for="surcharges">Surcharges</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    <input type="text" name="surcharges" placeholder="0.00" value="@Model.surcharges.ToString("n2")" required>
+                </div>
+
+            </div>
+            <br />
+            <div class="form-group">
+                <label for="auditSaving">Audit Savings</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    <input type="text" name="auditSaving" placeholder="0.00" value="@Model.auditSaving.ToString("n2")" required>
+                </div>
+
+            </div>
+            <br />
+            <div class="form-row">
+                <input type="submit" value="Save">
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+function getInfo(date) {
+    window.location.href = '@Url.Action("Veriship","Warehouse")?date=' + date;
+}
+</script>

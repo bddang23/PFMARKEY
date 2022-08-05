@@ -1,0 +1,132 @@
+﻿@model List<Intranet.Models.Warehouse.Shipments>
+@{
+    ViewData["Title"] = "Warehouse - History";
+
+}
+<div class="container">
+    <div class="flex-xxl-row">
+        <h2>Tracking History</h2>
+        <hr />
+    </div>
+
+    <div class="row">
+        <label><b>Filter</b></label>
+        <input style="width:15%" type="month" id="month" name="filter" onchange="getInfo(this.value)" value="@Model[0].DateTracked.ToString("yyyy-MM")">
+
+    </div>
+    <pre>
+    </pre>
+    <div class="row">
+        <div id="buttons">
+            <button class="btn btn-primary small" id="edit" onclick="edit()" style="width:90px">Edit</button>
+            <button class="btn btn-success small" id="save" onclick="save()" style="width:90px; display:none">Save</button>
+            <button class="btn btn-danger small" id="cancel" onclick="cancel()" style="width:90px; display:none">Cancel</button>
+        </div>
+
+        <table class="table" id="history">
+            <thead>
+                <tr>
+                    <th>Packages Received</th>
+                    <th>Packages Shipped</th>
+                    <th>Deliveries Made</th>
+                    <th>Mispacks</th>
+                    <th>Date Tracked</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model[0].id != -1)
+                    {
+                        int received = 0;
+                        int shipped = 0;
+                        int deliveries = 0;
+                        int mispack = 0;
+
+                        foreach (var s in Model)
+                        {
+                            received += s.Packages_Received;
+                            shipped += s.Packages_Shipped;
+                            deliveries += s.Deliveries_Made;
+                            mispack += s.Mispacks;
+
+                            <tr>
+                                <td hidden>@s.id</td>
+                                <td>@s.Packages_Received</td>
+                                <td>@s.Packages_Shipped</td>
+                                <td>@s.Deliveries_Made</td>
+                                <td>@s.Mispacks</td>
+                                <td>@s.DateTracked.ToString("d")</td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <th><b>@received</b></th>
+                            <th><b>@shipped</b></th>
+                            <th><b>@deliveries</b></th>
+                            <th><b>@mispack</b></th>
+                            <th><b>TOTAL</b></th>
+
+                        </tr>
+
+                    }
+                    else
+                    {
+                        <tr><th style="color:darkgreen">No Data This Month</th></tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+    function getInfo(date) {
+        window.location.href = '@Url.Action("History","Warehouse")?date=' + date;
+    }
+
+    function edit() {
+        document.getElementById("edit").style.display = "none";
+        document.getElementById("save").style.display = "block";
+        document.getElementById("cancel").style.display = "block";
+
+        var table = document.getElementById("history");
+        for (let i = 1; i < table.rows.length; i++) {
+            for (let j = 0; j < table.rows[i].cells.length; j++) {
+                table.rows[i].cells[j].contentEditable = true;
+            }
+        }
+    }
+    function save() {
+        document.getElementById("edit").style.display = "block";
+        document.getElementById("save").style.display = "none";
+        document.getElementById("cancel").style.display = "none";
+        var table = document.getElementById("history");
+        let warehouseArr = [];
+
+        for (let i = 2; i < table.rows.length; i++) {
+            let Id = table.rows[i].cells[0].innerText;
+            let received = table.rows[i].cells[1].innerText;
+            let shipped = table.rows[i].cells[2].innerText;
+            let deliveries = table.rows[i].cells[3].innerText;
+            let mispacks = table.rows[i].cells[4].innerText;
+            let date = table.rows[i].cells[5].innerText;
+            warehouseArr.push({ id: Id, Packages_Received: received, Packages_Shipped: shipped, Deliveries_Made: deliveries, Mispacks: mispacks, DateTracked: date });
+        }
+
+        $.ajax({
+            url: '/Warehouse/updateHistory',
+            type: 'POST',
+            dataType: 'JSON',
+            data: { jsonString: JSON.stringify(warehouseArr) },
+            success: function(response) {
+                location.reload();
+            }
+        });
+
+    }
+    function cancel() {
+        location.reload();
+
+    }
+</script>

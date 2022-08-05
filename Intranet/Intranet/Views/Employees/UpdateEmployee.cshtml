@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Update Employee";
+}
+<div class="container small">
+    @Html.Partial("_EmployeeForm")
+
+</div>
+<script>
+document.getElementsByClassName("close")[0].onclick = function() {
+    window.location.href = "/Employees/Index";
+};
+
+    @{
+        Intranet.Models.Signage.ManageEmployee.Employee selEmployee = Model.employees[0];
+        string startDate = selEmployee.StartDate.ToString("yyyy-MM-dd");
+        string birthday = selEmployee.Birthday.ToString("yyyy-MM-dd");
+    }
+
+    document.getElementById("id").value = "@selEmployee.Id";
+    document.getElementById("fname").value =        "@selEmployee.firstName" ;
+    document.getElementById("lname").value =         "@selEmployee.lastName";
+    document.getElementById("title").value =         "@selEmployee.title";
+    document.getElementById("devision").value =       "@selEmployee.devision";
+    document.getElementById("role").value =          "@selEmployee.role";
+    document.getElementById("location").value =      "@selEmployee.location";
+    
+
+    document.getElementById("startDate").value =     "@startDate";
+    document.getElementById("birthday").value =      "@birthday";
+    document.getElementById("phone").value =         "@selEmployee.phone";
+    document.getElementById("email").value =         "@selEmployee.email";
+</script>
+

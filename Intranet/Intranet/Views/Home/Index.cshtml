@@ -1,0 +1,127 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+
+
+}
+
+<div class="row">
+    <div class="col" id="calendar">
+        @Html.Partial("_smallCalendar")
+    </div>
+    <div class="col justify-content-center">
+        <pre>
+
+
+        </pre>
+        <div class="mb-auto" id="QuoteOfTheDay">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="border-width:0; text-align:center">
+                            <h1 style="color:green; white-space:nowrap;">Quote of the Day!</h1>
+                            <a asp-controller="Quotes" asp-action="Index">Click to Submit</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row">
+                        <th width="500px" style="align-items:center">
+                            <h4 style="text-shadow:1px 1px grey; text-align:center"><cite>@Model[0]</cite></h4>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <pre>
+
+
+
+        </pre>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="border-width:0; text-align:left ">
+                                <h2 style="color:green; white-space:nowrap;">Business Related</h2>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row">
+                            <th width="500px" style="align-items:center">
+                                <ul>
+                                    <li> <button onclick="window.location.href='/CSR/CSRGoal'" class="btn btn-info">CSR Goal</button> </li>
+                                    <li>
+                                        <button onclick="window.location.href='/OSR/Index'" class="btn btn-warning">OSR Cost Saving</button>
+                                    </li>
+                                    <li>
+                                        <button onclick="window.location.href='/VCS/CostSaving_ByVendor'" class="btn btn-success ">Vendor Cost Saving</button>
+                                    </li>
+                                </ul>
+
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="border-width:0;">
+                                <h2 style="color:green; white-space:nowrap;">Warehouse Controller</h2>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row">
+                            <th width="500px" style="align-items:center">
+                                <ul>
+                                    <li> <button onclick="window.location.href='/Warehouse/Shipments'" class="btn btn-info ">Shipment</button>      </li>
+                                    <li> <button onclick="window.location.href='/Warehouse/History'" class="btn btn-warning">History</button>       </li>
+                                    <li> <button onclick="window.location.href='/Warehouse/Veriship'" class="btn btn-primary ">Veriship</button>    </li>
+                                </ul>
+
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="border-width:0;">
+                                <h2 style="color:green; white-space:nowrap;">AutoCrib Analyze</h2>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row">
+                            <th width="500px" style="align-items:center">
+                                <ul>
+                                    <li><button onclick="window.location.href='/Autocrib/Specialist'" class="btn btn-warning ">By Specialist</button>      </li>
+                                    <li><button onclick="window.location.href='/Autocrib/Company'" class="btn btn-danger">By Company</button>              </li>
+                                </ul>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="w-100"></div>
+<div class="col">
+    <a class="weatherwidget-io" href="https://forecast7.com/en/43d42n83d95/saginaw/?unit=us" data-label_1="SAGINAW" data-label_2="WEATHER" data-theme="gray">SAGINAW WEATHER</a>
+    <script>
+        !function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
+    </script>
+</div>

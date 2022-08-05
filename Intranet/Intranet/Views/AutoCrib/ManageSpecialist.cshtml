@@ -1,0 +1,109 @@
+﻿@model List<Intranet.Models.AutoCrib.Specialist>;
+@{
+    ViewData["Title"] = "Manage Specialist";
+}
+<div class="container">
+    <h2>Manage Specialist</h2>
+
+    <hr />
+    <div class="row-sm">
+
+        <button class="btn btn-success" id="addEmployee">Add a New Employee</button>
+        <button class="btn btn-secondary" onclick="window.location.href='/AutoCrib/Specialist'">Return to Specialist</button>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>Add/Update Specialist</h3>
+                <form class="form" asp-action="AddUpdateSpecialist" asp-controller="AutoCrib">
+                    <input type="hidden"  id="idForm" name="id"/>
+                    <label for="name">Full Name: </label>
+
+                    <input type="text" id="nameForm" placeholder="John Doe" name="fullName" />
+
+                    <input type="submit" value="Save" />
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model != null)
+                    {
+                        foreach (var s in Model)
+                        {
+
+                            <tr>
+                                <td>@s.id</td>
+                                <td>@s.name</td>
+
+                                <td>
+                                    <button class="btn" name="@s.name _@s.id" onclick="updateSpecialist(this.name)"><img width="20px" src="~/images/update_icon.png" /></button>
+                                    <button class="btn" name="@s.id" onclick="DeleteSpecialist(this.name)"><img width="20px" src="~/images/delete_icon.jpg" /></button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function updateSpecialist(name) {
+        modal.style.display = "block";
+        var input = document.getElementById("nameForm");
+        var input2 = document.getElementById("idForm");
+        var Name = name.substring(0, name.indexOf('_'));
+        var Id = name.substring(name.indexOf('_') + 1);
+
+        input.value = Name;
+        input2.value = Id;
+    }
+
+    function DeleteSpecialist(name) {
+        if (confirm("Are you sure? \nThis action cannot be undone") == true) {
+
+            $.ajax({
+                url: '/AutoCrib/deleteSpecialist',
+                data: { id: name }
+            }).done(function() {
+                location.reload();
+            });
+        }
+    }
+
+    var modal = document.getElementById('myModal');
+
+
+    var btn = document.getElementById("addEmployee");
+
+
+    var span = document.getElementsByClassName("close")[0];
+
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+        var input = document.getElementById("nameForm");
+        var input2 = document.getElementById("idForm");
+        input.value = "";
+        input2.value = "";
+
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+</script>

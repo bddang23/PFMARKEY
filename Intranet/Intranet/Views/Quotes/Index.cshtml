@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Manage Quotes";
+}
+
+<div class="container">
+
+    <div id="myModal" class="modal">
+
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Quotes of The Day Submission</h3>
+            <hr />
+            <form asp-action="Index" asp-controller="Quotes" method="post" class="form">
+                <label for="quote">Submit your quotes here:</label>
+                <textarea class="form-control" type="text" name="quote"></textarea>
+
+                <br />
+
+                <label for="name">Submissioner:</label>
+                <input class="form-control" type="text" name="name" />
+
+                <br />
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>
+
+    </div>
+
+    <h3>Quotes of The Day!</h3>
+    <hr />
+    <br />
+    <button class="btn btn-success" id="addQuote">Add a New Quote!</button>
+
+    <br />
+
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Quote</th>
+                    <th>Submitted By</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model != null)
+                    {
+                        foreach (var q in Model)
+                        {
+                            <tr>
+                                <td>@q.quote</td>
+                                <td>@q.submissioner</td>
+                                <td>
+                                    <button class="btn" name="@q.Id" onclick="updateQuote(this.name)"><img width="20px" src="~/images/update_icon.png" /></button>
+                                    <button class="btn" name="@q.Id" onclick="deleteQuote(this.name)"><img width="20px" src="~/images/delete_icon.jpg" /></button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("addQuote");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    function updateQuote(Id) {
+        window.location.href = '@Url.Action("UpdateQuote","Quotes")?id=' + Id;
+    }
+
+    function deleteQuote(name) {
+        if (confirm("Are you sure? \nThis action cannot be undone") == true) {
+
+            $.ajax({
+                url: '/Quotes/DeleteQuote',
+                data: { id: name }
+            }).done(function() {
+                location.reload();
+            });
+        }
+    }
+</script>

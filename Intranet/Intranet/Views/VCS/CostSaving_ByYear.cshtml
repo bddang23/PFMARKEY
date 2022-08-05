@@ -1,0 +1,94 @@
+﻿@model Intranet.Models.Business.VCSPage
+@{
+    ViewData["Title"] = "Business- Vendor Cost Savings";
+
+}
+<div class="container">
+
+    <div class="row">
+        <h1>Vendor Cost Savings By Year</h1>
+
+
+        <div class="col-2">
+            <button onclick="window.location.href='/VCS/VendorList'" class="btn btn-sm btn-success" style="width:200px">Manage Vendors List</button>
+            <button onclick="window.location.href='/VCS/CostSaving_ByVendor'" class="btn btn-sm btn-secondary" style="width:200px">View By Vendor</button>
+        </div>
+        <br />
+        <div>
+
+            <label for="year"><b>YEAR</b></label>
+            <select class="form-select" onchange="changeYear()" id="selYear">
+                @{
+                    foreach (var y in Model.year)
+                    {
+                        if (y == Model.selYear)
+                        {
+
+                            <option value="@Model.selYear" selected> @y</option>
+
+                        }
+                        else
+                        {
+                            <option value="@y"> @y</option>
+                        }
+                    }
+                }
+            </select>
+            <br />
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Company Name</th>
+                        <th>Cost Saved</th>
+                    </tr>
+                </thead>
+                <form asp-action="updateYear" asp-controller="VCS">
+                    <input type="hidden" value="@Model.selYear" name="year"/>
+                <tbody>
+                        @{
+                            foreach (var v in Model.vendors)
+                            {
+                                decimal vendorCost;
+                                try
+                                {
+                                    vendorCost = v.VendorCost[DateTime.Parse("1-1-" + Model.selYear.ToString())];
+                                }
+                                catch
+                                {
+                                    vendorCost = 0;
+                                }
+                            <tr>
+                                <td> <label for="@v.VendorId">@v.VendorName</label></td>
+                                <td>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">$</div>
+                                        </div>
+                                        <input type="text" name="@v.VendorId" class="form-control" id="inlineFormInputGroup" placeholder="0,000.00" value="@vendorCost.ToString("n2")">
+                                    </div>
+                                </td>
+                            </tr>
+                            }
+                        }
+                    <input type="submit" class="btn btn-primary" value="Update" />
+
+                </tbody>
+
+                </form>
+            </table>
+
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    function changeYear() {
+        var year = document.getElementById("selYear").value
+        window.location.href = '@Url.Action("CostSaving_ByYear","VCS")?year=' + year;
+    }
+
+
+</script>

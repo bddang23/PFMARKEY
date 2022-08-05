@@ -1,0 +1,7 @@
+﻿@model string
+<div class="d-flex justify-content-around">
+
+    <button class="btn btn-warning" data-type="minus" id="minus-@Model" onclick="minus(this.id)">-</button>
+    <input type="text" class="form-control text-center trackCounter" id="count-@Model" value="0">
+    <button class="btn btn-success" data-type="plus" id="plus-@Model" onclick="add(this.id)"> +</button>
+</div>

@@ -1,0 +1,128 @@
+﻿@model Intranet.Controllers.AutoCrib.AssignSpecialistPage;
+@{
+    ViewData["Title"] = "Autocrib Assigned Specialist";
+}
+<div class="container">
+    <h2>Assign Company to Specialist</h2>
+    <hr />
+
+
+    <div class="row">
+        <button class="btn btn-primary" onclick="window.location.href='/AutoCrib/Company'">View By Company</button>
+        <button class="btn btn-info" onclick="window.location.href='/AutoCrib/Specialist'">View By Specialist</button>
+    </div>
+    <br />
+
+    <div class="row">
+        <p>
+
+            <b>SPECIALIST LIST:</b>
+            <select onchange="getData(this.value)" style="width:200px">
+                @{
+                    foreach (var s in Model.specialists)
+                    {
+                        if (s.id == Model.selSpecialist.id)
+                        {
+                            <option value="@s.id" selected>@s.name</option>
+                        }
+                        else
+                        {
+                            <option value="@s.id">@s.name</option>
+                        }
+
+                    }
+                }
+            </select>
+        </p>
+    </div>
+
+    <div class="row">
+        <h3>Assign Company</h3>
+        <table class="table table-sm">
+            <tbody>
+                @{
+                    int count = 1;
+                    foreach (var ac in Model.assignedCompany)
+                    {
+
+                        <tr>
+                            <td>@count</td>
+                            <td id="@ac.id">@ac.name.ToUpper()</td>
+                            <td><button class="btn" name="@ac.id _@ac.assignedSpecialist.name" onclick="DeleteSpecialist(this.name)"><img width="20px" src="~/images/delete_icon.jpg" /></button></td>
+                        </tr>
+                        count++;
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <br />
+
+    <div class="row">
+
+        <p>
+            <b>ADD COMPANY:</b>
+            <select id="company">
+                @{
+                    foreach (var c in Model.companies)
+                    {
+                        <option value="@c.id _@c.assignedSpecialist.name">@c.name</option>
+                    }
+                }
+            </select>
+        </p>
+
+        <button class="btn btn-success" onclick="AddCompany()">Add</button>
+
+    </div>
+
+</div>
+<script>
+    function getData(id) {
+        window.location.href = '@Url.Action("AssignSpecialist","Autocrib")?id=' + id;
+    }
+
+    function AddCompany() {
+        var selCompany = document.getElementById("company").value;
+
+        var company = selCompany.substring(0, selCompany.indexOf("_") - 1);
+
+        var AssignedSpecialist = selCompany.substring(selCompany.indexOf("_") + 1).trim();
+        if (AssignedSpecialist === "") {
+            if (confirm("Are you sure you want to assign this company to @Model.selSpecialist.name?")) {
+                $.ajax({
+                    url: '/Autocrib/AssignCompanytoSpecialist',
+                    data: { specialist: @Model.selSpecialist.id, companyID: company }
+                }).done(function() {
+                    location.reload();
+                });
+            };
+        }
+        else {
+            if (confirm("This action will remove " + AssignedSpecialist + " as Assigned Specialist. Are you sure you want to assign this company to @Model.selSpecialist.name?")) {
+                $.ajax({
+                    url: '/Autocrib/AssignCompanytoSpecialist',
+                    data: { specialist: @Model.selSpecialist.id, companyID: company }
+                }).done(function() {
+                    location.reload();
+                });
+            };
+        }
+    }
+
+    function DeleteSpecialist(name) {
+        var selCompany = name;
+        var AssignedSpecialist = selCompany.substring(selCompany.indexOf("_") + 1).trim();
+        var company = selCompany.substring(0, selCompany.indexOf("_") - 1);
+        if (confirm("This action will remove " + AssignedSpecialist + " as Assigned Specialist. Are you sure?")) {
+            $.ajax({
+                url: '/Autocrib/AssignCompanytoSpecialist',
+                data: { specialist: -1, companyID: company }
+            }).done(function() {
+                location.reload();
+            });
+        };
+    }
+</script>

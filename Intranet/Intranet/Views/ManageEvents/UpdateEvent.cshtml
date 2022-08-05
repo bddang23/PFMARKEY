@@ -1,0 +1,70 @@
+﻿@model Intranet.Models.Signage.Event;
+
+@{
+    ViewData["Title"] = "Manage Events  - Update";
+
+    DateTime start = DateTime.Parse(Model.start);
+    string StartDate = start.ToString("yyyy-MM-dd");
+    string StartTime = start.ToString("HH:mm");
+
+    DateTime end = DateTime.Parse(Model.end);
+
+
+    string checkBox = "";
+    string isHidden = "";
+
+    if (Model.allDay)
+    {
+        end = end.AddDays(-1);
+        checkBox = "checked";
+        isHidden = "hidden";
+
+    }
+
+    string EndDate = end.ToString("yyyy-MM-dd");
+    string EndTime = end.ToString("HH:mm");
+}
+<div class="container">
+    <h5>Update an Event</h5>
+
+    <form asp-action="UpdateEvent" asp-controller="ManageEvents" method="post" onsubmit="return validateForm()" name="Event"  class="form-check">
+        <div class="form-row">
+            <label for="title">Title</label>
+            <input type="text" name="title" value="@Model.title" required size="32px">
+            <input type="text" name="id" value="@Model.id" hidden/>
+        </div>
+        <br />
+        <div class="form-row">
+            <label for="startDate">Start Date:</label>
+            <input type="date" name="startDate" value="@StartDate" required>
+
+        </div>
+        <br />
+        <div class="form-row">
+
+            <label for="endDate">End Date:</label>
+            <input type="date" name="endDate" value="@EndDate" required>
+
+            <label for="isAllDay">All Day Event</label>
+            <input type="checkbox" name="isAllDay" id="checkBox" onchange="AllDayChecked()" @checkBox>
+        </div>
+        <br />
+        <div class="form-row" id="time" @isHidden>
+            <label for="startTime">Start Time</label>
+            <input type="time" name="startTime" value="@StartTime">
+
+            <label for="endTime">End Time</label>
+            <input type="time" name="endTime" value="@EndTime">
+        </div>
+        <br />
+        <div class="form-row">
+            <button class="btn btn-success" type="submit" style="width:150px">Update</button>
+            
+        </div>
+    </form>
+    <div class="row flex-row">
+        <button class="btn btn-warning" onclick="window.location.href='/ManageEvents/Index'" style="width:150px; position:relative; left:35px" >Cancel</button>
+     </div>
+    
+
+</div>

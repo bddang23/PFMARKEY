@@ -1,0 +1,67 @@
+﻿@model Intranet.Models.Signage.welcomeMessage;
+
+@{
+    ViewData["Title"] = "Welcome Message - Update";
+
+    string StartDate = Model.StartTime.ToString("yyyy-MM-dd");
+    string StartTime = Model.StartTime.ToString("HH:mm");
+
+    string EndDate = Model.EndTime.ToString("yyyy-MM-dd");
+    string EndTime = Model.EndTime.ToString("HH:mm");
+
+    string checkBox = "";
+    string isHidden = "";
+
+    if (EndTime.Contains("23:59"))
+    {
+        checkBox = "checked";
+        isHidden = "hidden";
+
+    }
+
+
+}
+<div class="container">
+    <h5>Update an Event</h5>
+
+    <form asp-action="UpdateMessage" asp-controller="WelcomeMessage" method="post" onsubmit="return validateForm()" name="Event"  class="form-check">
+        <div class="form-row">
+            <label for="message">Message</label>
+            <input type="text" name="message" value="@Model.Message" required size="32px">
+            <input type="text" name="id" value="@Model.Id" hidden/>
+        </div>
+        <br />
+        <div class="form-row">
+            <label for="startDate">Start Date:</label>
+            <input type="date" name="startDate" value="@StartDate" required>
+
+        </div>
+        <br />
+        <div class="form-row">
+
+            <label for="endDate">End Date:</label>
+            <input type="date" name="endDate" value="@EndDate" required>
+
+            <label for="isAllDay">All Day Event</label>
+            <input type="checkbox" name="isAllDay" id="checkBox" onchange="AllDayChecked()" @checkBox>
+        </div>
+        <br />
+        <div class="form-row" id="time" @isHidden>
+            <label for="startTime">Start Time</label>
+            <input type="time" name="startTime" value="@StartTime">
+
+            <label for="endTime">End Time</label>
+            <input type="time" name="endTime" value="@EndTime">
+        </div>
+        <br />
+        <div class="form-row">
+            <button class="btn btn-success" type="submit" style="width:150px">Update</button>
+            
+        </div>
+    </form>
+    <div class="row flex-row">
+        <button class="btn btn-warning" onclick="window.location.href='/WelcomeMessage/Index'" style="width:150px; position:relative; left:35px" >Cancel</button>
+     </div>
+    
+
+</div>

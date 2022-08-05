@@ -1,0 +1,95 @@
+﻿@{
+    ViewData["Title"] = "Manage Employees";
+}
+
+
+<div class="container">
+    <h2>Manage Employees</h2>
+
+    <hr />
+    <div class="row-sm">
+
+        <button class="btn btn-success" id="addEmployee">Add a New Employee</button>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                @Html.Partial("_EmployeeForm");
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Title</th>
+                    <th>Location</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int ctr = 0;
+                    if (Model.employees != null)
+                    {
+
+                        foreach (var e in Model.employees)
+                        {
+                            ctr++;
+                            <tr>
+                                <td>@ctr</td>
+                                <td>@e.firstName @e.lastName</td>
+                                <td>@e.title</td>
+                                <td>@e.location</td>
+                                <td>
+                                    <button class="btn" name="@e.Id" onclick="updateEmployee(this.name)"><img width="20px" src="~/images/update_icon.png" /></button>
+                                    <button class="btn" name="@e.Id" onclick="deleteEmployee(this.name)"><img width="20px" src="~/images/delete_icon.jpg" /></button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function updateEmployee(Id) {
+        window.location.href = '@Url.Action("UpdateEmployee","Employees")?id=' + Id;
+    }
+
+    function deleteEmployee(name) {
+        if (confirm("Are you sure? \nThis action cannot be undone") == true) {
+
+            $.ajax({
+                url: '/Employees/deleteEmployee',
+                data: { id: name }
+            }).done(function() {
+                location.reload();
+            });
+        }
+    }
+
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("addEmployee");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+
+</script>

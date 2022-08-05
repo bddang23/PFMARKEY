@@ -1,0 +1,101 @@
+﻿@model Intranet.Models.Business.VCSPage
+@{
+     ViewData["Title"] = "Business- Vendor List";
+}
+
+<div class="container">
+
+    <div id="myModal" class="modal">
+
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Add a Vendor</h3>
+            <hr />
+            <form asp-action="VendorList" asp-controller="VCS" method="post" class="form">
+
+                <label for="name">Vendor's Name':</label>
+                <input class="form-control" type="text" name="name" placeholder="ABC Company" />
+
+                <br />
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>
+
+    </div>
+
+    <h3>Vendor List</h3>
+    <hr />
+    <br />
+    <button class="btn btn-success" id="addVendor">Add a New Vendor</button>
+    <button class="btn btn-secondary" onclick="window.location.href='/VCS/CostSaving_ByVendor'">Return to Cost Saving by Vendor</button>
+
+    <br />
+
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Vendor</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model != null)
+                    {
+                        foreach (var v in Model.vendors)
+                        {
+                            <tr>
+                                <td>@v.VendorId</td>
+                                <td>@v.VendorName</td>
+                                <td>
+                                    <button class="btn" name="@v.VendorId" onclick="updateVendor(this.name)"><img width="20px" src="~/images/update_icon.png" /></button>
+                                    <button class="btn" name="@v.VendorId" onclick="deleteVendor(this.name)"><img width="20px" src="~/images/delete_icon.jpg" /></button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+>
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("addVendor");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    function updateVendor(Id) {
+        window.location.href = '@Url.Action("UpdateVendor","VCS")?id=' + Id;
+    }
+
+    function deleteVendor(name) {
+        if (confirm("Are you sure? \nThis action cannot be undone") == true) {
+
+            $.ajax({
+                url: '/VCS/DeleteVendor',
+                data: { id: name }
+            }).done(function() {
+                location.reload();
+            });
+        }
+    }
+</script>

@@ -1,0 +1,137 @@
+﻿@{
+    ViewData["Title"] = "Manage Welcome Message ";
+}
+<div class="container">
+
+    <h2>Welcome Message</h2>
+    <hr />
+
+    <button class="btn btn-success" id="addMessage">Schedule A New Message</button>
+
+    <h4 style="text-align:center"><i>Active Schedule Messages</i></h4>
+    <br/>
+    <table class="table" width="100%">
+        <thead>
+            <tr>
+                <th style="width:50%">Title</th>
+                <th style="width:20%">Start Time</th>
+                <th style="width:20%">End Time</th>
+                <th style="width:10%"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                if (Model != null)
+                {
+                    foreach (var e in Model)
+                    {
+                        if (e.Message.Contains("NO ACTIVE"))
+                        {
+                                <tr>
+                                <td><b>@e.Message</b></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>@e.Message</td>
+                                <td>@e.StartTime</td>
+                                <td>@e.EndTime</td>
+                                <td>
+                                    <button class="btn" name="@e.Id" onclick="updateMessage(this.name)"><img width="20px" src="~/images/update_icon.png" /></button>
+                                    <button class="btn" name="@e.Id" onclick="deleteMessage(this.name)"><img width="20px" src="~/images/delete_icon.jpg" /></button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            }
+        </tbody>
+
+    </table>
+
+      <div id="myModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close">&times;</span>
+            <h5>Add an Event</h5>
+
+            <form asp-action="Index" asp-controller="WelcomeMessage" method="post" onsubmit="return validateForm()" name="Event">
+                <div class="form-row">
+                    <label for="message">Message</label>
+                    <input type="text" name="message" placeholder="Welcome Message" required>
+                </div>
+                <br />
+                <div class="form-row">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" name="startDate" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+
+                </div>
+                <br />
+                <div class="form-row">
+
+                    <label for="endDate">End Date:</label>
+                    <input type="date" name="endDate" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+
+                    <label for="isAllDay">All Day</label>
+                    <input type="checkbox" name="isAllDay" id="checkBox" onchange="AllDayChecked()">
+                </div>
+                <br />
+                <div class="form-row" id="time">
+                    <label for="startTime">Start Time</label>
+                    <input type="time" name="startTime">
+
+                    <label for="endTime">End Time</label>
+                    <input type="time" name="endTime">
+                </div>
+                <br />
+                <div class="form-row">
+                    <input type="submit" value="Create">
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+                
+<script>
+
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("addMessage");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+
+    function updateMessage(name) {
+        window.location.href = '@Url.Action("UpdateMessage","WelcomeMessage")?id=' + name;
+    }
+
+    function deleteMessage(name) {
+        if (confirm("Are you sure? \nThis action cannot be undone") == true) {
+
+            $.ajax({
+                url: '/WelcomeMessage/DeleteMessage',
+                data: { id: name }
+            }).done(function() {
+                location.reload();
+            });
+        }
+    }
+</script>

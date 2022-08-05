@@ -1,0 +1,143 @@
+﻿@model Intranet.Models.Business.VCSPage
+@{
+    ViewData["Title"] = "Business- Vendor Cost Savings";
+}
+<div class="container">
+
+    <div class="row flex-row">
+        <h1>Vendor Cost Savings By Vendor</h1>
+        <hr />
+
+        <div class="col-2">
+            <button onclick="window.location.href='/VCS/VendorList'" class="btn btn-success" style="width:200px">Manage Vendors List</button>
+
+            <button onclick="window.location.href='/VCS/CostSaving_ByYear'" class="btn btn-primary" style="width:200px">View By Year</button>
+        </div>
+
+        <div class="col-6">
+
+            <label for="year"><b>Pick your company</b></label>
+            <select onchange="getData()" id="vendor">
+                @{
+                    if (Model != null)
+                    {
+                        foreach (var v in Model.vendors)
+                        {
+                            if (v.VendorId == Model.selVendor.VendorId)
+                            {
+
+                                <option value="@v.VendorId" selected> @v.VendorName</option>
+
+                            }
+                            else
+                            {
+                                <option value="@v.VendorId"> @v.VendorName</option>
+                            }
+                        }
+                    }
+                }
+            </select>
+            <pre>
+            </pre>
+            <div class="row">
+                <form id="byVendor" method="post" asp-action="UpdateCost" asp-controller="VCS" class="form-control">
+                    <input type="hidden" name="vId" value="@Model.selVendor.VendorId" />
+
+                    <div class="formWrapper">
+                        @{
+                            if (Model != null)
+                            {
+                                foreach (var val in Model.selVendor.VendorCost)
+                                {
+
+                                    string year = val.Key.ToString("yyyy");
+                                    <div id="@year _ @Model.selVendor.VendorId">
+                                        <label for="@year"><b>@year</b></label>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">$</div>
+                                            </div>
+                                            <input type="text" name="@year" class="form-control" id="inlineFormInputGroup" placeholder="0,000.00" value="@val.Value.ToString("n2")">
+                                            <button type="button" class="btn" name="@year _ @Model.selVendor.VendorId" onclick="deleteYear(this.name)"><img width="20px" src="~/images/delete_icon.jpg" /></button>
+                                        </div>
+
+                                    </div>
+
+                                    <br />
+                                }
+                            }
+                        }
+                    </div>
+                    <input type="submit" class="btn btn-success" value="Update" />
+                </form>
+                <button style="background:none; border:none" onclick="addYear()"><u>Add This Year</u></button>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    function getData() {
+        var vendor = document.getElementById("vendor").value
+        window.location.href = '@Url.Action("CostSaving_ByVendor","VCS")?vendor=' + vendor;
+    }
+
+    function addYear() {
+
+        var form = $('.formWrapper');
+        var vendor = document.getElementById("vendor").value;
+        var length = document.getElementById("byVendor").length;
+        if (length > 3) {
+
+            var latestYear = document.getElementById("byVendor")[length - 4].name;
+            var today = new Date();
+            var curYear = today.getFullYear();
+            if (curYear == latestYear) {
+                alert("Current Year Already Added");
+            } else {
+
+                var inputHTML = "<div id='" + curYear + " _ " + @Model.selVendor.VendorId+"'><label for='" + curYear + "'><b>" + curYear + "</b></label>" +
+                    "<div class='input-group mb-2'> <div class='input-group-prepend'> <div class='input-group-text'>$</div></div>" +
+                    "<input type='text' name='" + curYear + "' class='form-control' id='inlineFormInputGroup' placeholder='0,000.00'> " +
+                    "<button type='button' class='btn' name='" + curYear + " _ " + @Model.selVendor.VendorId+"' onclick='deleteYear(this.name)'><img width='20px' src='/images/delete_icon.jpg'/></button></div></div>";
+                $(form).append(inputHTML);
+            }
+        } else {
+            var today = new Date();
+            var curYear = today.getFullYear();
+            var inputHTML = "<div id='" + curYear + " _ " + @Model.selVendor.VendorId+"'><label for='" + curYear + "'><b>" + curYear + "</b></label>" +
+                "<div class='input-group mb-2'> <div class='input-group-prepend'> <div class='input-group-text'>$</div></div>" +
+                "<input type='text' name='" + curYear + "' class='form-control' id='inlineFormInputGroup' placeholder='0,000.00'> " +
+                "<button type='button' class='btn' name='" + curYear + " _ " + @Model.selVendor.VendorId+"' onclick='deleteYear(this.name)'><img width='20px' src='/images/delete_icon.jpg'/></button></div></div>";
+            $(form).append(inputHTML);
+        }
+    }
+
+
+    function deleteYear(name) {
+        let text = "Are you sure? \nThis action cannot be undone!";
+        if (confirm(text) == true) {
+            var year = name.substring(0, name.indexOf("_") - 1);
+            var vendor = name.substring(name.indexOf("_") + 2);
+
+            $.ajax({
+                url: '/VCS/DeleteYear',
+                type: 'POST',
+                dataType: 'JSON',
+                data: { Year: year, vId: vendor },
+                success: function(response) {
+                    const div = document.getElementById(name);
+                    div.remove();
+
+                }
+
+            });
+
+        }
+
+    }
+
+</script>

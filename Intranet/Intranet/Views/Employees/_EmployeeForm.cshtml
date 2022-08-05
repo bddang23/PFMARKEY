@@ -1,0 +1,101 @@
+﻿
+<span class="close">&times;</span>
+@{
+    if (Model.action.Contains("Add"))
+    {
+        <h5>Add an Employee</h5>
+    }
+    else
+    {
+        <h2>Update an Employee</h2>
+    }
+}
+
+<form asp-action="@Model.action" asp-controller="Employees" method="post" onsubmit="return validateForm()" name="Employee">
+    <input id="id" name="id" hidden/>
+    <div class="form-row">
+        <label for="fname">First Name: </label>
+        <input type="text" name="fname" placeholder="John" id="fname" required>
+
+
+        <label for="lname">Last Name: </label>
+        <input type="text" name="lname" placeholder="Doe" id="lname" required>
+    </div>
+    <br />
+    <div class="form-row">
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" placeholder="Sales Director" required>
+
+        <label for="devision">Division:</label>
+        <input type="text" id="devision" name="devision" placeholder="Sales" required>
+
+
+        <label for="role">Role:</label>
+        <select name="role" id="role">
+            @{
+                if (Model.roles != null)
+                {
+                    int id = 1;
+                    foreach (var r in Model.roles)
+                    {
+                        <option value="@id">@r</option>
+                        id++;
+                    }
+
+                }
+            }
+        </select>
+
+    </div>
+    <br />
+    <div class="form-row">
+        <label for="location">Location:</label>
+        <select name="location" id="location">
+            @{
+                if (Model.locations != null)
+                {
+
+                    foreach (var l in Model.locations)
+                    {
+                        <option value="@l">@l</option>
+
+                    }
+
+                }
+            }
+        </select>
+        <label for="startDate">Start Date:</label>
+        <input type="date" name="startDate" id="startDate" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+
+    </div>
+    <br />
+    <div class="form-row">
+
+        <label for="birthday">Birthday:</label>
+        <input type="date" name="birthday" id="birthday" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+    </div>
+    <br />
+    <div class="form-row">
+        <label for="phone">Phone:</label>
+        <input type="tel" name="phone" id="phone" placeholder="999-999-9999" required>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" placeholder="johndoe@pfmarkey.com" style="width:200px" required >
+    </div>
+    <br />
+
+    <br />
+    <div class="form-row">
+ @{
+    if (Model.action.Contains("Add"))
+    {
+        <button type="submit" class="btn btn-success">Create</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-primary">Update</button>
+    }
+}
+    </div>
+</form>
+

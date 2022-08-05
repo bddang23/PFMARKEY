@@ -1,0 +1,48 @@
+﻿@model Intranet.Models.Signage.Event
+@{
+    ViewData["Title"] = "Calendar";
+}
+<div class="container">
+    <div id="calendar" style="height:50%"></div>
+
+</div>
+
+
+
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.css">
+@section Scripts{
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                contentHeight: '30%',
+                header: {
+                    left: 'prevYear,prev,next,nextYear today',
+                    center: 'title',
+                    right: 'event employee'
+                },
+                firstDay: 0,
+                slotMinutes: 60,
+                events: '@Url.RouteUrl(new{ action="GetEvents", controller="Calendar"})',
+                customButtons: {
+                    event: {
+                        text: 'Manage Events',
+                        click: function() {
+                          window.location.assign("/ManageEvents/Index")
+                        }
+                    },
+                    employee: {
+                        text: 'Manage Employees',
+                        click: function() {
+                          window.location.assign("/Employees/Index")
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    }

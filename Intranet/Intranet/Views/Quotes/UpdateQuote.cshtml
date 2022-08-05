@@ -1,0 +1,23 @@
+﻿
+@{
+        ViewData["Title"] = "Quotes Update";
+}
+<div class="container-sm">
+    
+<h3>Quotes of The Day Submission</h3>
+<hr />
+<form asp-action="UpdateQuote" asp-controller="Quotes" method="post" class="form">
+    <input type="text" name="id" value="@Model.Id" hidden/>
+    <label for="quote">Submit your quotes here:</label>
+    <textarea class="form-control" type="text" name="quote">@Model.quote</textarea>
+
+    <br />
+
+    <label for="name">Submissioner:</label>
+    <input class="form-control" type="text" name="name" value="@Model.submissioner"/>
+
+    <br />
+    <button type="submit" class="btn btn-success">Submit</button>
+</form>
+<a href="/Quotes/Index" style="color:gray"><i>Return to homepage</i></a>
+</div>

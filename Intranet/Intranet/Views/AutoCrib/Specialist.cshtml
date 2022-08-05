@@ -1,0 +1,44 @@
+﻿@model List<Intranet.Models.AutoCrib.Specialist>
+@{
+    ViewData["Title"] = "Autocrib - By Specialist";
+}
+<div class="container">
+
+    <h2>Autocrib By Specialist - View Only </h2>
+    <hr />
+    <br>
+
+    <button class="btn btn-primary" onclick="window.location.href='/AutoCrib/ManageSpecialist'">Manage Specialist</button>
+    <button class="btn btn-info" onclick="window.location.href='/AutoCrib/Company'">View By Company</button>
+     <button class="btn btn-outline-secondary" onclick="window.location.href='/AutoCrib/AssignSpecialist'">Assign Company To Specialist</button>
+
+    <table class="table autocrib">
+        <thead>
+            <tr>
+                <th>Specialist</th>
+                <th>Number of Accounts</th>
+                <th>Items</th>
+                <th>Out Of Stock</th>
+                <th>Red</th>
+                <th>Yellow</th>
+                <th>In-Stock (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var s in Model)
+                {
+                    <tr>
+                    <td>@s.name</td>
+                    <td><a href="@Url.Action("CompaniesBySpecialist","AutoCrib",new {id=s.id})">@s.numOfAcc</a></td>
+                    <td>@s.items</td>
+                    <td>@s.outOfStock</td>
+                    <td>@s.red</td>
+                    <td>@s.yellow</td>
+                    <td>@s.inStock</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

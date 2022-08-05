@@ -1,0 +1,18 @@
+﻿@model Intranet.Models.Business.VendorCostSave
+@{
+      ViewData["Title"] = "Business- Vendor Cost Savings";
+}
+<div class="container">
+    
+<h3>Add a Vendor</h3>
+<hr />
+<form asp-action="UpdateVEndor" asp-controller="VCS" method="post" class="form">
+    <input type="hidden" name="id" value="@Model.VendorId" />
+    <label for="name">Vendor's Name':</label>
+    <input class="form-control" type="text" name="name" value="@Model.VendorName" />
+
+    <br />
+    <button type="submit" class="btn btn-success">Submit</button>
+</form>
+<a href="/VCS/VendorList">Return to Vendor List</a>
+</div>
